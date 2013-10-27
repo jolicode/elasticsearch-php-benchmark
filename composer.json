@@ -1,0 +1,13 @@
+{
+    "name": "jolicode/elasticsearch-clients-benchmark",
+    "description": "Let's try and compare all the ElasticSearch PHP Clients",
+    "require": {
+        "ruflin/elastica": "stable"
+    },
+    "authors": [
+        {
+            "name": "Damien Alexandre",
+            "email": "dalexandre@jolicode.com"
+        }
+    ]
+}
