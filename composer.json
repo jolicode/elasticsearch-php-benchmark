@@ -2,7 +2,7 @@
     "name": "jolicode/elasticsearch-clients-benchmark",
     "description": "Let's try and compare all the ElasticSearch PHP Clients",
     "require": {
-        "ruflin/elastica": "stable"
+        "ruflin/elastica": "v0.90.5.0"
     },
     "authors": [
         {
