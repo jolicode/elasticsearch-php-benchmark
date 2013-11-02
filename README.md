@@ -8,6 +8,11 @@ They are configured the same way:
 - two nodes cluster (as we run a test with the master node down)
 - keep alive on the connection (if possible)
 
+About the results
+-----------------
+
+We mainly test memory consumption and ease of use here,
+speed is also a criteria but is suggest to network variation, ElasticSearch state... Be careful about the results.
 
 To compare
 ==========

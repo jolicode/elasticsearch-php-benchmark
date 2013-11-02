@@ -3,7 +3,8 @@
     "description": "Demo and benchmark of all the ElasticSearch PHP Clients",
     "require": {
         "ruflin/elastica": "v0.90.5.0",
-        "symfony/console": "dev-master"
+        "symfony/console": "2.3.*@dev",
+        "symfony/stopwatch": "2.3.*@dev"
     },
     "authors": [
         {
