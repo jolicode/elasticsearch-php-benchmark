@@ -1,13 +1,19 @@
 {
     "name": "jolicode/elasticsearch-clients-benchmark",
-    "description": "Let's try and compare all the ElasticSearch PHP Clients",
+    "description": "Demo and benchmark of all the ElasticSearch PHP Clients",
     "require": {
-        "ruflin/elastica": "v0.90.5.0"
+        "ruflin/elastica": "v0.90.5.0",
+        "symfony/console": "dev-master"
     },
     "authors": [
         {
             "name": "Damien Alexandre",
             "email": "dalexandre@jolicode.com"
         }
-    ]
+    ],
+    "autoload": {
+        "psr-0": {
+            "ElasticSearchClients": "src/"
+        }
+    }
 }

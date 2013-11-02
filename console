@@ -1,0 +1,21 @@
+#!/usr/bin/env php
+<?php
+
+// if you don't want to setup permissions the proper way, just uncomment the following PHP line
+// read http://symfony.com/doc/current/book/installation.html#configuration-and-setup for more information
+//umask(0000);
+
+set_time_limit(0);
+
+require_once __DIR__.'/vendor/autoload.php';
+
+use ElasticSearchClients\Command\RunCommand;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Input\InputArgument;
+
+$console = new Application("ElasticSearch Bench", 0.1);
+
+$console->add(new RunCommand());
+
+$console->run();
+
