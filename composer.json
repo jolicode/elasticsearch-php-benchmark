@@ -5,7 +5,9 @@
         "ruflin/elastica": "v0.90.5.0",
         "symfony/console": "2.3.*@dev",
         "symfony/stopwatch": "2.3.*@dev",
-        "sherlock/sherlock": "dev-master"
+        "sherlock/sherlock": "dev-master",
+        "elasticsearch/elasticsearch": "v0.4.1",
+        "nervetattoo/elasticsearch": "v2.3.0"
     },
     "minimum-stability": "dev",
     "authors": [
