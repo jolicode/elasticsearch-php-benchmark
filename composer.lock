@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "68cb8fda5657d0d1645b0ed15f38f18e",
+    "hash": "162324ef51792963ba5dcacb91a9f99c",
     "packages": [
         {
             "name": "ruflin/elastica",
@@ -62,6 +62,55 @@
             "time": "2013-10-27 12:53:43"
         },
         {
+            "name": "sherlock/sherlock",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/polyfractal/sherlock.git",
+                "reference": "ca435579462949b0790e0f05977a0c6ccfd8c1e5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/polyfractal/sherlock/zipball/ca435579462949b0790e0f05977a0c6ccfd8c1e5",
+                "reference": "ca435579462949b0790e0f05977a0c6ccfd8c1e5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.9",
+                "symfony/event-dispatcher": "~2.1"
+            },
+            "require-dev": {
+                "phpmd/phpmd": "1.4.*",
+                "phpunit/phpunit": "3.7.*",
+                "squizlabs/php_codesniffer": "1.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Sherlock": "src/",
+                    "Sherlock/tests": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Zachary Tong",
+                    "homepage": "http://euphonious-intuition.com/"
+                }
+            ],
+            "description": "PHP Client for Elasticsearch",
+            "homepage": "https://sherlockphp.org",
+            "keywords": [
+                "client",
+                "elasticsearch",
+                "search"
+            ],
+            "time": "2013-10-26 20:01:15"
+        },
+        {
             "name": "symfony/console",
             "version": "2.3.x-dev",
             "target-dir": "Symfony/Component/Console",
@@ -113,6 +162,60 @@
             "description": "Symfony Console Component",
             "homepage": "http://symfony.com",
             "time": "2013-09-25 06:04:15"
+        },
+        {
+            "name": "symfony/event-dispatcher",
+            "version": "dev-master",
+            "target-dir": "Symfony/Component/EventDispatcher",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/EventDispatcher.git",
+                "reference": "d51d78b34c1d9dcc384ba48155105fe99284dd67"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/EventDispatcher/zipball/d51d78b34c1d9dcc384ba48155105fe99284dd67",
+                "reference": "d51d78b34c1d9dcc384ba48155105fe99284dd67",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "symfony/dependency-injection": "~2.0"
+            },
+            "suggest": {
+                "symfony/dependency-injection": "",
+                "symfony/http-kernel": ""
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.4-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Symfony\\Component\\EventDispatcher\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "http://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony EventDispatcher Component",
+            "homepage": "http://symfony.com",
+            "time": "2013-10-17 11:48:11"
         },
         {
             "name": "symfony/stopwatch",
@@ -168,10 +271,11 @@
     "aliases": [
 
     ],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "stability-flags": {
         "symfony/console": 20,
-        "symfony/stopwatch": 20
+        "symfony/stopwatch": 20,
+        "sherlock/sherlock": 20
     },
     "platform": [
 

@@ -14,6 +14,8 @@ About the results
 We mainly test memory consumption and ease of use here,
 speed is also a criteria but is suggest to network variation, ElasticSearch state... Be careful about the results.
 
+We use Sherlock `0.2.0.*@dev` as the 0.1 branch is deprecated. It's still alpha, I will update the results when it get done.
+
 To compare
 ==========
 

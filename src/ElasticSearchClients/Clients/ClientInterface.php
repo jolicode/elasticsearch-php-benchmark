@@ -11,4 +11,8 @@ interface ClientInterface
     public function getDocument();
 
     public function searchDocument();
+
+    public function searchDocumentWithFacet();
+
+    public function searchOnDisconnectNode();
 }

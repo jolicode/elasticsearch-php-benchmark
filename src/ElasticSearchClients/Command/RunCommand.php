@@ -14,12 +14,15 @@ class RunCommand extends Command
 {
     // @todo Dynamic list
     protected $clients = array(
-        'elastica' => 'ElasticSearchClients\Clients\Elastica'
+        'sherlock' => 'ElasticSearchClients\Clients\SherlockPHP',
+        'elastica' => 'ElasticSearchClients\Clients\Elastica',
     );
 
     protected $methods = array(
         'getDocument',
         'searchDocument',
+        'searchDocumentWithFacet',
+        'searchOnDisconnectNode',
     );
 
     protected function configure()
@@ -47,16 +50,24 @@ class RunCommand extends Command
         $stopwatch      = new Stopwatch();
         $stopwatch->start($client_name);
 
-        for ($i = 0; $i < 400; $i++)
+        for ($i = 0; $i < 1000; $i++)
         {
             /** @var $client ClientInterface */
             $client         = new $this->clients[$client_name];
 
             foreach ($this->methods as $method)
             {
-                $client->{$method}();
+                try
+                {
+                    $client->{$method}();
+                }
+                catch (\Exception $e)
+                {
+                    $output->writeln('Error: '.$e->getMessage());
+                }
             }
         }
+
 
         $event = $stopwatch->stop($client_name);
 
