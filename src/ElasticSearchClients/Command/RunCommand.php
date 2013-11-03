@@ -16,6 +16,7 @@ class RunCommand extends Command
     protected $clients = array(
         'sherlock' => 'ElasticSearchClients\Clients\SherlockPHP',
         'elastica' => 'ElasticSearchClients\Clients\Elastica',
+        'nervetattoo' => 'ElasticSearchClients\Clients\Nervetattoo',
     );
 
     protected $methods = array(
