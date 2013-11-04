@@ -95,13 +95,5 @@ curl -XPOST 'http://localhost:9200/client_bench/_search?pretty=true' -d '
 { "query": { "match_all" : {} } }'
 
 
-curl -XPOST 'http://localhost:9200/client_bench/_search?pretty=true' -d '
-{
-  "query": {
-    "match_all" : {}
-  },
-  "facets" : {
-    "names" : { "terms" : {"field" : "author.name"} }
-  }
-}'
+curl -XPOST 'http://localhost:9200/client_bench/_refresh'
 

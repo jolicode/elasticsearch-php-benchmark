@@ -17,6 +17,7 @@ class RunCommand extends Command
         'sherlock' => 'ElasticSearchClients\Clients\SherlockPHP',
         'elastica' => 'ElasticSearchClients\Clients\Elastica',
         'nervetattoo' => 'ElasticSearchClients\Clients\Nervetattoo',
+        'elasticsearch' => 'ElasticSearchClients\Clients\Elasticsearch',
     );
 
     protected $methods = array(
@@ -51,7 +52,7 @@ class RunCommand extends Command
         $stopwatch      = new Stopwatch();
         $stopwatch->start($client_name);
 
-        for ($i = 0; $i < 1000; $i++)
+        for ($i = 0; $i < 500; $i++)
         {
             /** @var $client ClientInterface */
             $client         = new $this->clients[$client_name];
@@ -64,7 +65,7 @@ class RunCommand extends Command
                 }
                 catch (\Exception $e)
                 {
-                    $output->writeln('Error: '.$e->getMessage());
+                    //$output->writeln('Error: '.$e->getMessage());
                 }
             }
         }
