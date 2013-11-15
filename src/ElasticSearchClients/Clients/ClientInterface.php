@@ -7,7 +7,7 @@ interface ClientInterface
     const TYPE_NAME         = "post";
     const EXISTING_ID       = "1";
     const ONE_DOC_TERM      = "dimensionnelles";
-    const SUGGESTER_TEXT    = "lags";
+    const SUGGESTER_TEXT    = "lags"; // suggest "logs" :)
 
     public function getDocument();
 
