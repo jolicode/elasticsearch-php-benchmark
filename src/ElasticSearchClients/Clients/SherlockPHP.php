@@ -18,12 +18,13 @@ class SherlockPHP implements ClientInterface
     public function __construct()
     {
         $this->client = new \Sherlock\Sherlock();
-        $this->client->addNode("localhost", 9201);
-        $this->client->addNode("localhost", 9200);
+        $this->client->addNode("127.0.0.1", 9200);
+        //$this->client->addNode("localhost", 9201);
+        //$this->client->autodetectClusterState(); // is called on 0 nodes otherwise
 
         $this->client_wrong_node = new \Sherlock\Sherlock();
         $this->client_wrong_node->addNode("localhost", 9200);
-        $this->client_wrong_node->addNode("localhost", 9201);
+        $this->client_wrong_node->addNode("127.0.0.1", 9201);
     }
 
     public function getDocument()

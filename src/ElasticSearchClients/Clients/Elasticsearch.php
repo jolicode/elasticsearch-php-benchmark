@@ -17,7 +17,6 @@ class Elasticsearch implements ClientInterface
     {
         $params = array('hosts' => array (
             '127.0.0.1:9200',
-            '127.0.0.1:9201',
         ));
         $this->client = new Client($params);
 

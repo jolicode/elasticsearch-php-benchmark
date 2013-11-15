@@ -15,14 +15,14 @@ class Nervetattoo implements ClientInterface
     public function __construct()
     {
         $this->client = Client::connection(array(
-            'servers' => '127.0.0.1:9200',
+            'servers' => array('127.0.0.1:9200'), // only the first is used...
             'protocol' => 'http',
             'index' => self::INDEX_NAME,
             'type' => self::TYPE_NAME
         ));
 
         $this->client_wrong_node = Client::connection(array(
-            'servers' => '127.0.0.1:9201',
+            'servers' => array('127.0.0.1:9201', '127.0.0.1:9200'),
             'protocol' => 'http',
             'index' => self::INDEX_NAME,
             'type' => self::TYPE_NAME

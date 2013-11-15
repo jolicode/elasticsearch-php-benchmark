@@ -26,7 +26,6 @@ class Elastica implements ClientInterface
             'timeout'         => null,
             'connections'     => array(
                 array('host' => 'localhost', 'port' => 9200, 'persistent' => true),
-                array('host' => 'localhost', 'port' => 9201, 'persistent' => true),
             ), // host, port, path, timeout, transport, persistent, timeout, config -> (curl, headers, url)
             'roundRobin'      => false,
             'log'             => false,

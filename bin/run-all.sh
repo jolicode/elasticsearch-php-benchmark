@@ -1,6 +1,14 @@
 ./bin/load-data.sh
 
-./console run elasticsearch
-./console run sherlock
-./console run elastica
-./console run nervetattoo
+curl -XPOST 'http://localhost:9200/client_bench/_refresh'
+sleep 5
+./console run elasticsearch --hide-errors=1
+curl -XPOST 'http://localhost:9200/client_bench/_refresh'
+sleep 5
+./console run sherlock --hide-errors=1
+curl -XPOST 'http://localhost:9200/client_bench/_refresh'
+sleep 5
+./console run elastica --hide-errors=1
+curl -XPOST 'http://localhost:9200/client_bench/_refresh'
+sleep 5
+./console run nervetattoo --hide-errors=1

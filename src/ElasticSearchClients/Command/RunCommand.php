@@ -28,6 +28,7 @@ class RunCommand extends Command
         'searchDocumentWithFacet',
         'searchOnDisconnectNode',
         'searchSuggestion',
+        'indexRefresh',
         'indexStats',
     );
 
@@ -41,12 +42,14 @@ class RunCommand extends Command
                 InputArgument::REQUIRED,
                 'The Client to test'
             )
+            ->addOption('hide-errors', 's', InputOption::VALUE_OPTIONAL, "", false)
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $client_name = $input->getArgument('client');
+        $hide_errors = (bool) $input->getOption('hide-errors');
 
         if (!isset($this->clients[$client_name])) {
             $output->writeln("Unknown client name.");
@@ -83,7 +86,10 @@ class RunCommand extends Command
                 }
                 catch (\Exception $e)
                 {
-                    //$output->writeln('Error: '.$e->getMessage());
+                    if (!$hide_errors)
+                    {
+                        $output->writeln('Error: '.$e->getMessage());
+                    }
 
                     if ($i === 499)
                     {
