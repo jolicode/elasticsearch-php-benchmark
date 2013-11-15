@@ -1,10 +1,10 @@
 ElasticSearch PHP clients benchmark
 ===================================
 
-We run all the PHP client for ElasticSearch (if we miss one, send a PR!) and ask them to perform a lot of requests
-and we compute some statistics about it.
+We run all the PHP clients for Elasticsearch (if we miss one, send a PR!) and ask them to perform a lot of requests,
+we compute some statistics about it.
 
-More than the speed or memory, this benchmark is also about usage, API and examples for each client.
+More than the speed or memory, this benchmark is also about usage, API and examples for each clients.
 
 They are configured the same way:
 - no logs
@@ -16,16 +16,7 @@ About versions
 
 We use Sherlock `0.2.0.*@dev` as the 0.1 branch is deprecated. It's still alpha.
 
-To compare
-==========
+Read about the whole results
+----------------------------
 
-- Keep Alive connexion?
-- Memory consumption
-- Speed
-- Connexion handling, failover
-- Query builder? Json only?
-- Documentation, community, etc...
-- Does it handle:
-    - routing?
-    - suggestion API?
-    - mtl queries?
+This benchmark is part of an article describing [Elasticsearch PHP clients](http://jolicode.com/).
