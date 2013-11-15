@@ -3,6 +3,7 @@
 namespace ElasticSearchClients\Clients;
 
 use \Elasticsearch\Client;
+use \Elasticsearch\Endpoints\Indices\Refresh;
 
 /**
  * https://github.com/elasticsearch/elasticsearch-php
@@ -96,5 +97,46 @@ class Elasticsearch implements ClientInterface
         }
 
         return $docs;
+    }
+
+    public function searchSuggestion()
+    {
+        $results = $this->client->search(array(
+            'index' => self::INDEX_NAME,
+            'type'  => self::TYPE_NAME,
+            'body'  => array(
+                'query' => array(
+                    'query_string' => array(
+                        'query' => self::SUGGESTER_TEXT
+                    )
+                ),
+                'suggest' => array(
+                    'suggest1' => array (
+                        'text' => self::SUGGESTER_TEXT,
+                        'term' => array('field' => '_all', 'size' => 4)
+                    )
+                ),
+            )
+        ));
+
+        $suggests = $results['suggest'];
+
+        if (isset($suggests['suggest1'])) {
+            return $suggests['suggest1'][0]['options'][0]['text'];
+        } else {
+            throw new \Exception("Suggestion is broken, no suggestion received");
+        }
+    }
+
+    public function indexRefresh()
+    {
+        return $this->client->indices()->refresh(array('index' => self::INDEX_NAME));
+    }
+
+    public function indexStats()
+    {
+        $stats = $this->client->indices()->stats(array('index' => self::INDEX_NAME));
+
+        return $stats['ok'];
     }
 }

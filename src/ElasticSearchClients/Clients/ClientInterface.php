@@ -7,6 +7,7 @@ interface ClientInterface
     const TYPE_NAME         = "post";
     const EXISTING_ID       = "1";
     const ONE_DOC_TERM      = "dimensionnelles";
+    const SUGGESTER_TEXT    = "lags";
 
     public function getDocument();
 
@@ -15,4 +16,10 @@ interface ClientInterface
     public function searchDocumentWithFacet();
 
     public function searchOnDisconnectNode();
+
+    public function searchSuggestion();
+
+    public function indexStats();
+
+    public function indexRefresh();
 }

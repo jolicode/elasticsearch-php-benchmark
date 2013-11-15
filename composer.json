@@ -1,12 +1,12 @@
 {
     "name": "jolicode/elasticsearch-clients-benchmark",
-    "description": "Demo and benchmark of all the ElasticSearch PHP Clients",
+    "description": "Demo and benchmark of all the PHP ElasticSearch Clients",
     "require": {
         "ruflin/elastica": "v0.90.5.0",
         "symfony/console": "2.3.*@dev",
         "symfony/stopwatch": "2.3.*@dev",
         "sherlock/sherlock": "dev-master",
-        "elasticsearch/elasticsearch": "dev-master",
+        "elasticsearch/elasticsearch": "v0.4.2",
         "nervetattoo/elasticsearch": "v2.3.0"
     },
     "minimum-stability": "dev",

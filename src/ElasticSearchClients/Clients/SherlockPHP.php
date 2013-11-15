@@ -3,6 +3,8 @@
 namespace ElasticSearchClients\Clients;
 
 use Sherlock\components\facets\Terms;
+use Sherlock\requests\BatchCommand;
+use Sherlock\requests\Command;
 use Sherlock\Sherlock as Sherlock;
 
 /**
@@ -82,5 +84,54 @@ class SherlockPHP implements ClientInterface
         }
 
         return $docs;
+    }
+
+    /**
+     * We CAN'T do Suggestion with Sherlock
+     */
+    public function searchSuggestion()
+    {
+        throw new \Exception("Can't perform suggestion request");
+
+        $s = $this->client->search();
+        $s->index(self::INDEX_NAME);
+        $s->type(self::TYPE_NAME);
+
+        $qs = Sherlock::queryBuilder()->QueryString()->query(self::SUGGESTER_TEXT);
+
+        $docs = $s
+            ->query($qs)
+            ->suggest(array(
+                'suggest1' => array('text' => self::SUGGESTER_TEXT, 'term' => array('field' => '_all', 'size' => 4))
+            ))->execute();
+
+        $suggests = isset($docs->responseData['suggests']) ? $docs->responseData['suggests'] : false;
+
+        if (isset($suggests['suggest1'])) {
+            return $suggests['suggest1']['options'][0]['text'];
+        } else {
+            throw new \Exception("Suggestion is broken, no suggestion received");
+        }
+    }
+
+    /**
+     * Not supported
+     */
+    public function indexRefresh()
+    {
+        throw new \Exception("Can't perform refresh request");
+    }
+
+    /**
+     * Not supported
+     */
+    public function indexStats()
+    {
+        throw new \Exception("Can't perform stats request");
+
+        $command = new Command();
+        $command->index(self::INDEX_NAME)->action('stats');
+
+        // ???
     }
 }
