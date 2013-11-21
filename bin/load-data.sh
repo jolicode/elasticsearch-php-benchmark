@@ -1,5 +1,7 @@
 curl -XDELETE 'http://localhost:9200/client_bench'
 
+curl -XPOST 'http://localhost:9200/client_bench/_cache/clear'
+
 curl -XPUT 'http://localhost:9200/client_bench' -d '
 {
   "number_of_shards": 1,
