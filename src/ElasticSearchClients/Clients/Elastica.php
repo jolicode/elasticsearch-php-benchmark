@@ -16,7 +16,7 @@ class Elastica implements ClientInterface
     protected $client;
     protected $client_wrong_node;
 
-    public function __construct()
+    public function __construct($benchmarkType)
     {
         $this->client = new Client(array(
             'path'            => null,

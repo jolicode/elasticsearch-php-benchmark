@@ -13,7 +13,7 @@ class Nervetattoo implements ClientInterface
     protected $client;
     protected $client_wrong_node;
 
-    public function __construct()
+    public function __construct($benchmarkType)
     {
         $this->client = Client::connection(array(
             'servers' => array('127.0.0.1:9200'), // only the first is used...

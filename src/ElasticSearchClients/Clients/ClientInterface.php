@@ -24,4 +24,6 @@ interface ClientInterface
     public function indexStats(Stopwatch &$stopwatch);
 
     public function indexRefresh(Stopwatch &$stopwatch);
+
+    public function __construct($benchmarkType);
 }

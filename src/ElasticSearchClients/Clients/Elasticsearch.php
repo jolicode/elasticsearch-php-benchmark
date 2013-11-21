@@ -14,7 +14,7 @@ class Elasticsearch implements ClientInterface
     protected $client;
     protected $client_wrong_node;
 
-    public function __construct()
+    public function __construct($benchmarkType)
     {
         $params = array('hosts' => array (
             '127.0.0.1:9200',
@@ -94,7 +94,7 @@ class Elasticsearch implements ClientInterface
                     ))
                 )
             ));
-        $event = $stopwatch->start('searchOnDisconnectNode');
+        $event = $stopwatch->stop('searchOnDisconnectNode');
 
         if ($docs['hits']['total'] != 1) {
             throw new \Exception("Search does not match 1 document");

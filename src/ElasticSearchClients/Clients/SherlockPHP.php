@@ -16,7 +16,7 @@ class SherlockPHP implements ClientInterface
     protected $client;
     protected $client_wrong_node;
 
-    public function __construct()
+    public function __construct($benchmarkType)
     {
         $this->client = new \Sherlock\Sherlock();
         $this->client->addNode("127.0.0.1", 9200);
