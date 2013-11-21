@@ -61,8 +61,8 @@ class RunCommand extends Command
         $output->writeln($client_name." tests");
         $output->writeln("");
 
-        $stopwatch      = new Stopwatch();
-        $stopwatch->start($client_name);
+        $stopwatch = new Stopwatch();
+        $total     = 0;
 
         for ($i = 0; $i < 500; $i++)
         {
@@ -71,16 +71,14 @@ class RunCommand extends Command
 
             foreach ($this->methods as $method)
             {
-                $stopwatch->start($method);
-
                 try
                 {
-                    $client->{$method}();
-
-                    $event = $stopwatch->stop($method);
+                    /** @var StopwatchEvent $event */
+                    $event = $client->{$method}($stopwatch);
 
                     if ($i === 499)
                     {
+                        $total += $event->getDuration();
                         $this->writeEvent($event, $method, $output);
                     }
                 }
@@ -99,17 +97,22 @@ class RunCommand extends Command
             }
         }
 
-
-        $event = $stopwatch->stop($client_name);
-        $this->writeEvent($event, $client_name, $output);
+        $this->writeTotal($total, $client_name, $output);
     }
 
     protected function writeEvent(StopwatchEvent $event, $name, $output)
     {
-        $output->write($name);
+        $output->write(str_pad($name, 20, " ", STR_PAD_RIGHT));
         $output->write("\t");
-        $output->write($event->getDuration());
+        $output->write(str_pad($event->getDuration(), 10, " ", STR_PAD_RIGHT));
         $output->write("\t");
-        $output->writeln($event->getMemory());
+        $output->writeln(str_pad($event->getMemory(), 10, " ", STR_PAD_RIGHT));
+    }
+
+    protected function writeTotal($duration, $name, $output)
+    {
+        $output->write(str_pad($name, 20, " ", STR_PAD_RIGHT));
+        $output->write("\t");
+        $output->write(str_pad($duration, 10, " ", STR_PAD_RIGHT));
     }
 }

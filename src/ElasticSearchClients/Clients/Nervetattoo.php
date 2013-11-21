@@ -3,6 +3,7 @@
 namespace ElasticSearchClients\Clients;
 
 use \ElasticSearch\Client;
+use Symfony\Component\Stopwatch\Stopwatch;
 
 /**
  * https://github.com/nervetattoo/elasticsearch
@@ -29,25 +30,30 @@ class Nervetattoo implements ClientInterface
         ));
     }
 
-    public function getDocument()
+    public function getDocument(Stopwatch &$stopwatch)
     {
-        return $this->client->get(self::EXISTING_ID);
+        $stopwatch->start('getDocument');
+        $this->client->get(self::EXISTING_ID);
+        return $stopwatch->stop('getDocument');
     }
 
-    public function searchDocument()
+    public function searchDocument(Stopwatch &$stopwatch)
     {
+        $stopwatch->start('searchDocument');
         $docs = $this->client->search(self::ONE_DOC_TERM);
+        $event = $stopwatch->stop('searchDocument');
 
         if ($docs['hits']['total'] != 1) {
             throw new \Exception("Search does not match 1 document");
         }
 
-        return $docs;
+        return $event;
     }
 
-    public function searchDocumentWithFacet()
+    public function searchDocumentWithFacet(Stopwatch &$stopwatch)
     {
-        $results = $this->client->search(array(
+        $stopwatch->start('searchDocumentWithFacet');
+        $this->client->search(array(
             'query' => array(
                 'match_all' => array()
             ),
@@ -57,23 +63,25 @@ class Nervetattoo implements ClientInterface
                   )
             ),
         ));
-
-        return $results;
+        return $stopwatch->stop('searchDocumentWithFacet');
     }
 
-    public function searchOnDisconnectNode()
+    public function searchOnDisconnectNode(Stopwatch &$stopwatch)
     {
+        $stopwatch->start('searchOnDisconnectNode');
         $docs = $this->client_wrong_node->search(self::ONE_DOC_TERM);
+        $event = $stopwatch->stop('searchOnDisconnectNode');
 
         if ($docs['hits']['total'] != 1) {
             throw new \Exception("Search does not match 1 document");
         }
 
-        return $docs;
+        return $event;
     }
 
-    public function searchSuggestion()
+    public function searchSuggestion(Stopwatch &$stopwatch)
     {
+        $stopwatch->start('searchSuggestion');
         $results = $this->client->search(array(
             'query' => array(
                 'query_string' => array(
@@ -87,25 +95,27 @@ class Nervetattoo implements ClientInterface
                 )
             ),
         ));
-
+        $event = $stopwatch->stop('searchSuggestion');
         $suggests = $results['suggest'];
 
-        if (isset($suggests['suggest1'])) {
-            return $suggests['suggest1'][0]['options'][0]['text'];
-        } else {
+        if (!isset($suggests['suggest1'])) {
             throw new \Exception("Suggestion is broken, no suggestion received");
         }
+        return $event;
+
     }
 
-    public function indexRefresh()
+    public function indexRefresh(Stopwatch &$stopwatch)
     {
-        return $this->client->refresh();
+        $stopwatch->start('indexRefresh');
+        $this->client->refresh();
+        return $stopwatch->stop('indexRefresh');
     }
 
-    public function indexStats()
+    public function indexStats(Stopwatch &$stopwatch)
     {
-        $stats = $this->client->request('/'.self::INDEX_NAME.'/_stats', "GET", false, true);
-
-        return $stats['ok'];
+        $stopwatch->start('indexStats');
+        $this->client->request('/'.self::INDEX_NAME.'/_stats', "GET", false, true);
+        return $stopwatch->stop('indexStats');
     }
 }

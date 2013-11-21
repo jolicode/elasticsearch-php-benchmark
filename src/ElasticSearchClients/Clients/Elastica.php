@@ -6,6 +6,7 @@ use Elastica\Client;
 use Elastica\Facet\Terms;
 use Elastica\Query;
 use Elastica\Suggest\Term;
+use Symfony\Component\Stopwatch\Stopwatch;
 
 /**
  * http://elastica.io/
@@ -49,47 +50,59 @@ class Elastica implements ClientInterface
         ));
     }
 
-    public function getDocument()
+    public function getDocument(Stopwatch &$stopwatch)
     {
-        return $this->client->getIndex(self::INDEX_NAME)->getType(self::TYPE_NAME)->getDocument(self::EXISTING_ID);
+        $stopwatch->start('getDocument');
+        $this->client->getIndex(self::INDEX_NAME)->getType(self::TYPE_NAME)->getDocument(self::EXISTING_ID);
+        return $stopwatch->stop('getDocument');
+
     }
 
-    public function searchDocument()
+    public function searchDocument(Stopwatch &$stopwatch)
     {
+        $stopwatch->start('searchDocument');
         $docs = $this->client->getIndex(self::INDEX_NAME)->getType(self::TYPE_NAME)->search(self::ONE_DOC_TERM);
+        $event = $stopwatch->stop('searchDocument');
 
         if ($docs->getTotalHits() != 1) {
             throw new \Exception("Search does not match 1 document");
         }
 
-        return $docs;
+        return $event;
     }
 
-    public function searchDocumentWithFacet()
+    public function searchDocumentWithFacet(Stopwatch &$stopwatch)
     {
+        $stopwatch->start('searchDocumentWithFacet');
+
         $query = Query::create("");
         $facet = new Terms('names');
         $facet->setField('author.name');
-
         $query->addFacet($facet);
         $search = $this->client->getIndex(self::INDEX_NAME)->getType(self::TYPE_NAME)->createSearch($query);
 
-        return $search->search();
+        $search->search();
+
+        return $stopwatch->stop('searchDocumentWithFacet');
     }
 
-    public function searchOnDisconnectNode()
+    public function searchOnDisconnectNode(Stopwatch &$stopwatch)
     {
+        $stopwatch->start('searchOnDisconnectNode');
         $docs = $this->client_wrong_node->getIndex(self::INDEX_NAME)->getType(self::TYPE_NAME)->search(self::ONE_DOC_TERM);
+        $event = $stopwatch->stop('searchOnDisconnectNode');
 
         if ($docs->getTotalHits() != 1) {
             throw new \Exception("Search does not match 1 document");
         }
 
-        return $docs;
+        return $event;
+
     }
 
-    public function searchSuggestion()
+    public function searchSuggestion(Stopwatch &$stopwatch)
     {
+        $stopwatch->start('searchSuggestion');
         $query = Query::create(self::SUGGESTER_TEXT);
 
         $suggest = new Term();
@@ -101,26 +114,28 @@ class Elastica implements ClientInterface
         $results = $search->search();
         $suggests = $results->getSuggests();
 
-        if (isset($suggests['suggest1'])) {
-            return $suggests['suggest1']['options'][0]['text'];
-        } else {
+        $event = $stopwatch->stop('searchSuggestion');
+
+        if (!isset($suggests['suggest1'])) {
             throw new \Exception("Suggestion is broken, no suggestion received");
         }
+
+        return $event;
     }
 
-    public function indexRefresh()
+    public function indexRefresh(Stopwatch &$stopwatch)
     {
+        $stopwatch->start('indexRefresh');
         $index = $this->client->getIndex(self::INDEX_NAME);
-
-        return $index->refresh();
+        $index->refresh();
+        return $stopwatch->stop('indexRefresh');
     }
 
-    public function indexStats()
+    public function indexStats(Stopwatch &$stopwatch)
     {
+        $stopwatch->start('indexStats');
         $index = $this->client->getIndex(self::INDEX_NAME);
-
-        $stats = $index->getStats()->getData();
-
-        return $stats['ok'];
+        $index->getStats()->getData();
+        return $stopwatch->stop('indexStats');
     }
 }
