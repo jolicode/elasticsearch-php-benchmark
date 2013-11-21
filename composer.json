@@ -2,7 +2,7 @@
     "name": "jolicode/elasticsearch-clients-benchmark",
     "description": "Demo and benchmark of all the PHP ElasticSearch Clients",
     "require": {
-        "php": ">=5.5",
+        "php": ">=5.5.0",
         "ruflin/elastica": "v0.90.5.0",
         "symfony/console": "2.3.*@dev",
         "symfony/stopwatch": "2.3.*@dev",
