@@ -16,16 +16,46 @@ class Elasticsearch implements ClientInterface
 
     public function __construct($benchmarkType)
     {
-        $params = array('hosts' => array (
-            '127.0.0.1:9200',
-        ));
-        $this->client = new Client($params);
+        if ($benchmarkType == 'transient') {
+            $params = array(
+                'hosts' => array ('127.0.0.1:9200'),
+                'connectionClass' => '\Elasticsearch\Connections\CurlMultiConnection',
+                'connectionPoolClass' => '\Elasticsearch\ConnectionPool\StaticNoPingConnectionPool',
+                'selectorClass' => 'Elasticsearch\ConnectionPool\Selectors\StickyRoundRobinSelector'
+            );
+            $this->client = new Client($params);
 
-        $params = array('hosts' => array (
-            '127.0.0.1:9201',
-            '127.0.0.1:9200',
-        ));
-        $this->client_wrong_node = new Client($params);
+            $params = array(
+                'hosts' => array (
+                    '127.0.0.1:9201',
+                    '127.0.0.1:9200'
+                ),
+                'connectionClass' => '\Elasticsearch\Connections\CurlMultiConnection',
+                'connectionPoolClass' => '\Elasticsearch\ConnectionPool\StaticNoPingConnectionPool',
+                'selectorClass' => 'Elasticsearch\ConnectionPool\Selectors\StickyRoundRobinSelector'
+            );
+            $this->client_wrong_node = new Client($params);
+        } elseif ($benchmarkType == 'persistent') {
+            $params = array(
+                'hosts' => array ('127.0.0.1:9200'),
+                'connectionClass' => '\Elasticsearch\Connections\CurlMultiConnection',
+                'connectionPoolClass' => '\Elasticsearch\ConnectionPool\StaticConnectionPool',
+                'selectorClass' => 'Elasticsearch\ConnectionPool\Selectors\StickyRoundRobinSelector'
+            );
+            $this->client = new Client($params);
+
+            $params = array(
+                'hosts' => array (
+                    '127.0.0.1:9201',
+                    '127.0.0.1:9200'
+                ),
+                'connectionClass' => '\Elasticsearch\Connections\CurlMultiConnection',
+                'connectionPoolClass' => '\Elasticsearch\ConnectionPool\StaticConnectionPool',
+                'selectorClass' => 'Elasticsearch\ConnectionPool\Selectors\StickyRoundRobinSelector'
+            );
+            $this->client_wrong_node = new Client($params);
+        }
+
     }
 
     public function getDocument(Stopwatch &$stopwatch)

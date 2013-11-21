@@ -3,20 +3,20 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "98843e8568692e9adfa86300fd0572c3",
+    "hash": "4ffff532247f94664e1924695b5705eb",
     "packages": [
         {
             "name": "elasticsearch/elasticsearch",
-            "version": "v0.4.2",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/elasticsearch/elasticsearch-php.git",
-                "reference": "9293ee7fd78dbc44c1003cd94dfa2e757e36e974"
+                "reference": "043e8fbce79afe854b2b38347f6d92bfe45daba5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/elasticsearch/elasticsearch-php/zipball/9293ee7fd78dbc44c1003cd94dfa2e757e36e974",
-                "reference": "9293ee7fd78dbc44c1003cd94dfa2e757e36e974",
+                "url": "https://api.github.com/repos/elasticsearch/elasticsearch-php/zipball/043e8fbce79afe854b2b38347f6d92bfe45daba5",
+                "reference": "043e8fbce79afe854b2b38347f6d92bfe45daba5",
                 "shasum": ""
             },
             "require": {
@@ -57,7 +57,7 @@
                 "elasticsearch",
                 "search"
             ],
-            "time": "2013-11-13 05:02:12"
+            "time": "2013-11-21 22:33:04"
         },
         {
             "name": "guzzle/guzzle",
@@ -65,12 +65,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "4e9e345e3212eb44a628a8f1a92416afe726de85"
+                "reference": "6e6b9c54243c6ee1db4874f7ee8209859750657a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/4e9e345e3212eb44a628a8f1a92416afe726de85",
-                "reference": "4e9e345e3212eb44a628a8f1a92416afe726de85",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/6e6b9c54243c6ee1db4874f7ee8209859750657a",
+                "reference": "6e6b9c54243c6ee1db4874f7ee8209859750657a",
                 "shasum": ""
             },
             "require": {
@@ -149,7 +149,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2013-11-01 22:43:11"
+            "time": "2013-11-21 22:11:12"
         },
         {
             "name": "monolog/monolog",
@@ -157,12 +157,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "7f99ac07d38fd367d1f5f85693ae8433738f7f94"
+                "reference": "11cb918bbc471da036c6148b995d42f79806428d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/7f99ac07d38fd367d1f5f85693ae8433738f7f94",
-                "reference": "7f99ac07d38fd367d1f5f85693ae8433738f7f94",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/11cb918bbc471da036c6148b995d42f79806428d",
+                "reference": "11cb918bbc471da036c6148b995d42f79806428d",
                 "shasum": ""
             },
             "require": {
@@ -170,22 +170,26 @@
                 "psr/log": "~1.0"
             },
             "require-dev": {
+                "aws/aws-sdk-php": "~2.4.8",
                 "doctrine/couchdb": "dev-master",
                 "mlehner/gelf-php": "1.0.*",
                 "phpunit/phpunit": "~3.7.0",
-                "raven/raven": "0.5.*"
+                "raven/raven": "0.5.*",
+                "ruflin/elastica": "0.90.*"
             },
             "suggest": {
+                "aws/aws-sdk-php": "Allow sending log messages to AWS services like DynamoDB",
                 "doctrine/couchdb": "Allow sending log messages to a CouchDB server",
                 "ext-amqp": "Allow sending log messages to an AMQP server (1.0+ required)",
                 "ext-mongo": "Allow sending log messages to a MongoDB server",
                 "mlehner/gelf-php": "Allow sending log messages to a GrayLog2 server",
-                "raven/raven": "Allow sending log messages to a Sentry server"
+                "raven/raven": "Allow sending log messages to a Sentry server",
+                "ruflin/elastica": "Allow sending log messages to an Elastic Search server"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.6.x-dev"
+                    "dev-master": "1.7.x-dev"
                 }
             },
             "autoload": {
@@ -212,7 +216,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2013-10-31 21:38:39"
+            "time": "2013-11-20 12:44:25"
         },
         {
             "name": "nervetattoo/elasticsearch",
@@ -261,7 +265,7 @@
         },
         {
             "name": "pimple/pimple",
-            "version": "dev-master",
+            "version": "1.1.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fabpot/Pimple.git",
@@ -307,19 +311,24 @@
         },
         {
             "name": "psr/log",
-            "version": "1.0.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/log.git",
-                "reference": "fe0936ee26643249e916849d48e3a51d5f5e278b"
+                "reference": "134145e8d08ddcb9bb8f49a2feb9aa1f2393650c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/log/zipball/fe0936ee26643249e916849d48e3a51d5f5e278b",
-                "reference": "fe0936ee26643249e916849d48e3a51d5f5e278b",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/134145e8d08ddcb9bb8f49a2feb9aa1f2393650c",
+                "reference": "134145e8d08ddcb9bb8f49a2feb9aa1f2393650c",
                 "shasum": ""
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
             "autoload": {
                 "psr-0": {
                     "Psr\\Log\\": ""
@@ -341,7 +350,7 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2012-12-21 11:40:51"
+            "time": "2013-11-19 10:21:35"
         },
         {
             "name": "ruflin/elastica",
@@ -455,12 +464,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Console.git",
-                "reference": "f880062d56edefb25b36f2defa65aafe65959dc7"
+                "reference": "00848d3e13cf512e77c7498c2b3b0192f61f4b18"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Console/zipball/f880062d56edefb25b36f2defa65aafe65959dc7",
-                "reference": "f880062d56edefb25b36f2defa65aafe65959dc7",
+                "url": "https://api.github.com/repos/symfony/Console/zipball/00848d3e13cf512e77c7498c2b3b0192f61f4b18",
+                "reference": "00848d3e13cf512e77c7498c2b3b0192f61f4b18",
                 "shasum": ""
             },
             "require": {
@@ -499,7 +508,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "http://symfony.com",
-            "time": "2013-09-25 06:04:15"
+            "time": "2013-11-13 21:27:40"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -613,11 +622,12 @@
     "stability-flags": {
         "symfony/console": 20,
         "symfony/stopwatch": 20,
-        "sherlock/sherlock": 20
+        "sherlock/sherlock": 20,
+        "elasticsearch/elasticsearch": 20
     },
-    "platform": [
-
-    ],
+    "platform": {
+        "php": ">=5.5.0"
+    },
     "platform-dev": [
 
     ]
