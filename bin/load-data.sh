@@ -5,9 +5,10 @@ curl -XPOST 'http://localhost:9200/client_bench/_cache/clear'
 curl -XPUT 'http://localhost:9200/client_bench' -d '
 {
   "number_of_shards": 1,
-  "number_of_replicas": 1
+  "number_of_replicas": 0
 }'
 
+curl -XGET 'http://localhost:9200/_cluster/health?wait_for_status=yellow&timeout=50s'
 
 curl -XPUT 'http://localhost:9200/client_bench/post/_mapping' -d '
 {
