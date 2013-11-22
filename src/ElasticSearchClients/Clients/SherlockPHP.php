@@ -6,6 +6,7 @@ use Sherlock\components\facets\Terms;
 use Sherlock\requests\BatchCommand;
 use Sherlock\requests\Command;
 use Sherlock\Sherlock as Sherlock;
+use Symfony\Component\Stopwatch\Stopwatch;
 
 /**
  * http://sherlockphp.org/
@@ -15,7 +16,7 @@ class SherlockPHP implements ClientInterface
     protected $client;
     protected $client_wrong_node;
 
-    public function __construct()
+    public function __construct($benchmarkType)
     {
         $this->client = new \Sherlock\Sherlock();
         $this->client->addNode("127.0.0.1", 9200);
@@ -27,18 +28,21 @@ class SherlockPHP implements ClientInterface
         $this->client_wrong_node->addNode("127.0.0.1", 9201);
     }
 
-    public function getDocument()
+    public function getDocument(Stopwatch &$stopwatch)
     {
+        $stopwatch->start('getDocument');
         $q = $this->client->getDocument();
         $q->id(self::EXISTING_ID);
         $q->type(self::TYPE_NAME);
         $q->index(self::INDEX_NAME);
 
-        return $q->execute();
+        $q->execute();
+        return $stopwatch->stop('getDocument');
     }
 
-    public function searchDocument()
+    public function searchDocument(Stopwatch &$stopwatch)
     {
+        $stopwatch->start('searchDocument');
         $s = $this->client->search();
         $s->index(self::INDEX_NAME);
         $s->type(self::TYPE_NAME);
@@ -46,16 +50,18 @@ class SherlockPHP implements ClientInterface
         $qs = Sherlock::queryBuilder()->QueryString()->query(self::ONE_DOC_TERM);
 
         $docs = $s->query($qs)->execute();
+        $event = $stopwatch->stop('searchDocument');
 
         if ($docs->total != 1) {
             throw new \Exception("Search does not match 1 document");
         }
 
-        return $docs;
+        return $event;
     }
 
-    public function searchDocumentWithFacet()
+    public function searchDocumentWithFacet(Stopwatch &$stopwatch)
     {
+        $stopwatch->start('searchDocumentWithFacet');
         $s = $this->client->search();
         $s->index(self::INDEX_NAME);
         $s->type(self::TYPE_NAME);
@@ -65,13 +71,14 @@ class SherlockPHP implements ClientInterface
         $facet = new Terms(array('facetname' => 'names'));
         $facet->fields(array('author.name'));
 
-        $docs = $s->query($ma)->facets($facet)->execute();
+        $s->query($ma)->facets($facet)->execute();
+        return $stopwatch->stop('searchDocumentWithFacet');
 
-        return $docs;
     }
 
-    public function searchOnDisconnectNode()
+    public function searchOnDisconnectNode(Stopwatch &$stopwatch)
     {
+        $stopwatch->start('searchOnDisconnectNode');
         $s = $this->client_wrong_node->search();
         $s->index(self::INDEX_NAME);
         $s->type(self::TYPE_NAME);
@@ -79,18 +86,19 @@ class SherlockPHP implements ClientInterface
         $qs = Sherlock::queryBuilder()->QueryString()->query(self::ONE_DOC_TERM);
 
         $docs = $s->query($qs)->execute();
+        $event = $stopwatch->stop('searchOnDisconnectNode');
 
         if ($docs->total != 1) {
             throw new \Exception("Search does not match 1 document");
         }
 
-        return $docs;
+        return $event;
     }
 
     /**
      * We CAN'T do Suggestion with Sherlock
      */
-    public function searchSuggestion()
+    public function searchSuggestion(Stopwatch &$stopwatch)
     {
         throw new \Exception("Can't perform suggestion request");
 
@@ -118,7 +126,7 @@ class SherlockPHP implements ClientInterface
     /**
      * Not supported
      */
-    public function indexRefresh()
+    public function indexRefresh(Stopwatch &$stopwatch)
     {
         throw new \Exception("Can't perform refresh request");
     }
@@ -126,7 +134,7 @@ class SherlockPHP implements ClientInterface
     /**
      * Not supported
      */
-    public function indexStats()
+    public function indexStats(Stopwatch &$stopwatch)
     {
         throw new \Exception("Can't perform stats request");
 

@@ -4,6 +4,7 @@ namespace ElasticSearchClients\Clients;
 
 use \Elasticsearch\Client;
 use \Elasticsearch\Endpoints\Indices\Refresh;
+use Symfony\Component\Stopwatch\Stopwatch;
 
 /**
  * https://github.com/elasticsearch/elasticsearch-php
@@ -13,129 +14,167 @@ class Elasticsearch implements ClientInterface
     protected $client;
     protected $client_wrong_node;
 
-    public function __construct()
+    public function __construct($benchmarkType)
     {
-        $params = array('hosts' => array (
-            '127.0.0.1:9200',
-        ));
-        $this->client = new Client($params);
+        if ($benchmarkType == 'transient') {
+            $params = array(
+                'hosts' => array ('127.0.0.1:9200'),
+                'connectionClass' => '\Elasticsearch\Connections\CurlMultiConnection',
+                'connectionPoolClass' => '\Elasticsearch\ConnectionPool\StaticNoPingConnectionPool',
+                'selectorClass' => 'Elasticsearch\ConnectionPool\Selectors\StickyRoundRobinSelector'
+            );
+            $this->client = new Client($params);
 
-        $params = array('hosts' => array (
-            '127.0.0.1:9201',
-            '127.0.0.1:9200',
-        ));
-        $this->client_wrong_node = new Client($params);
+            $params = array(
+                'hosts' => array (
+                    '127.0.0.1:9201',
+                    '127.0.0.1:9200'
+                ),
+                'connectionClass' => '\Elasticsearch\Connections\CurlMultiConnection',
+                'connectionPoolClass' => '\Elasticsearch\ConnectionPool\StaticNoPingConnectionPool',
+                'selectorClass' => 'Elasticsearch\ConnectionPool\Selectors\StickyRoundRobinSelector'
+            );
+            $this->client_wrong_node = new Client($params);
+        } elseif ($benchmarkType == 'persistent') {
+            $params = array(
+                'hosts' => array ('127.0.0.1:9200'),
+                'connectionClass' => '\Elasticsearch\Connections\CurlMultiConnection',
+                'connectionPoolClass' => '\Elasticsearch\ConnectionPool\StaticConnectionPool',
+                'selectorClass' => 'Elasticsearch\ConnectionPool\Selectors\StickyRoundRobinSelector'
+            );
+            $this->client = new Client($params);
+
+            $params = array(
+                'hosts' => array (
+                    '127.0.0.1:9201',
+                    '127.0.0.1:9200'
+                ),
+                'connectionClass' => '\Elasticsearch\Connections\CurlMultiConnection',
+                'connectionPoolClass' => '\Elasticsearch\ConnectionPool\StaticConnectionPool',
+                'selectorClass' => 'Elasticsearch\ConnectionPool\Selectors\StickyRoundRobinSelector'
+            );
+            $this->client_wrong_node = new Client($params);
+        }
+
     }
 
-    public function getDocument()
+    public function getDocument(Stopwatch &$stopwatch)
     {
-        $getParams = array(
-            'index' => self::INDEX_NAME,
-            'type'  => self::TYPE_NAME,
-            'id'    => self::EXISTING_ID
-        );
+        $stopwatch->start('getDocument');
+        $this->client->get(array(
+                'index' => self::INDEX_NAME,
+                'type'  => self::TYPE_NAME,
+                'id'    => self::EXISTING_ID
+            ));
+        return $stopwatch->stop('getDocument');
 
-        return $this->client->get($getParams);
     }
 
-    public function searchDocument()
+    public function searchDocument(Stopwatch &$stopwatch)
     {
-        $params = array(
-            'index' => self::INDEX_NAME,
-            'type'  => self::TYPE_NAME,
-            'body'  => array(
-                'query' => array('query_string' => array(
-                    'query' => self::ONE_DOC_TERM,
-                ))
-            )
-        );
-
-        $docs = $this->client->search($params);
+        $stopwatch->start('searchDocument');
+        $docs = $this->client->search(array(
+                'index' => self::INDEX_NAME,
+                'type'  => self::TYPE_NAME,
+                'body'  => array(
+                    'query' => array('query_string' => array(
+                        'query' => self::ONE_DOC_TERM,
+                    ))
+                )
+            ));
+        $event = $stopwatch->stop('searchDocument');
 
         if ($docs['hits']['total'] != 1) {
             throw new \Exception("Search does not match 1 document");
         }
 
-        return $docs;
+        return $event;
+
     }
 
-    public function searchDocumentWithFacet()
+    public function searchDocumentWithFacet(Stopwatch &$stopwatch)
     {
-        $results = $this->client->search(array(
-            'index' => self::INDEX_NAME,
-            'type'  => self::TYPE_NAME,
-            'body'  => array(
-                'query' => array(
-                    'match_all' => array()
-                ),
-                'facets' => array('names' =>
-                      array ('terms' =>
-                             array('field' => 'author.name')
-                      )
-                ),
-            )
-        ));
-
-        return $results;
+        $stopwatch->start('searchDocumentWithFacet');
+        $this->client->search(array(
+                'index' => self::INDEX_NAME,
+                'type'  => self::TYPE_NAME,
+                'body'  => array(
+                    'query' => array(
+                        'match_all' => array()
+                    ),
+                    'facets' => array('names' =>
+                                      array ('terms' =>
+                                             array('field' => 'author.name')
+                                      )
+                    ),
+                )
+            ));
+        return $stopwatch->stop('searchDocumentWithFacet');
     }
 
-    public function searchOnDisconnectNode()
+    public function searchOnDisconnectNode(Stopwatch &$stopwatch)
     {
+        $stopwatch->start('searchOnDisconnectNode');
         $docs = $this->client_wrong_node->search(array(
-            'index' => self::INDEX_NAME,
-            'type'  => self::TYPE_NAME,
-            'body'  => array(
-                'query' => array('query_string' => array(
-                    'query' => self::ONE_DOC_TERM,
-                ))
-            )
-        ));
+                'index' => self::INDEX_NAME,
+                'type'  => self::TYPE_NAME,
+                'body'  => array(
+                    'query' => array('query_string' => array(
+                        'query' => self::ONE_DOC_TERM,
+                    ))
+                )
+            ));
+        $event = $stopwatch->stop('searchOnDisconnectNode');
 
         if ($docs['hits']['total'] != 1) {
             throw new \Exception("Search does not match 1 document");
         }
 
-        return $docs;
+        return $event;
     }
 
-    public function searchSuggestion()
+    public function searchSuggestion(Stopwatch &$stopwatch)
     {
+        $stopwatch->start('searchSuggestion');
         $results = $this->client->search(array(
-            'index' => self::INDEX_NAME,
-            'type'  => self::TYPE_NAME,
-            'body'  => array(
-                'query' => array(
-                    'query_string' => array(
-                        'query' => self::SUGGESTER_TEXT
-                    )
-                ),
-                'suggest' => array(
-                    'suggest1' => array (
-                        'text' => self::SUGGESTER_TEXT,
-                        'term' => array('field' => '_all', 'size' => 4)
-                    )
-                ),
-            )
-        ));
+                'index' => self::INDEX_NAME,
+                'type'  => self::TYPE_NAME,
+                'body'  => array(
+                    'query' => array(
+                        'query_string' => array(
+                            'query' => self::SUGGESTER_TEXT
+                        )
+                    ),
+                    'suggest' => array(
+                        'suggest1' => array (
+                            'text' => self::SUGGESTER_TEXT,
+                            'term' => array('field' => '_all', 'size' => 4)
+                        )
+                    ),
+                )
+            ));
+        $event = $stopwatch->stop('searchSuggestion');
 
         $suggests = $results['suggest'];
 
-        if (isset($suggests['suggest1'])) {
-            return $suggests['suggest1'][0]['options'][0]['text'];
-        } else {
+        if (!isset($suggests['suggest1'])) {
             throw new \Exception("Suggestion is broken, no suggestion received");
         }
+
+        return $event;
     }
 
-    public function indexRefresh()
+    public function indexRefresh(Stopwatch &$stopwatch)
     {
-        return $this->client->indices()->refresh(array('index' => self::INDEX_NAME));
+        $stopwatch->start('indexRefresh');
+        $this->client->indices()->refresh(array('index' => self::INDEX_NAME));
+        return $stopwatch->stop('indexRefresh');
     }
 
-    public function indexStats()
+    public function indexStats(Stopwatch &$stopwatch)
     {
-        $stats = $this->client->indices()->stats(array('index' => self::INDEX_NAME));
-
-        return $stats['ok'];
+        $stopwatch->start('indexStats');
+        $this->client->indices()->stats(array('index' => self::INDEX_NAME));
+        return $stopwatch->stop('indexStats');
     }
 }

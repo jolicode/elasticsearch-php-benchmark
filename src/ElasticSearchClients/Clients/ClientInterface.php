@@ -1,6 +1,8 @@
 <?php
 namespace ElasticSearchClients\Clients;
 
+use Symfony\Component\Stopwatch\Stopwatch;
+
 interface ClientInterface
 {
     const INDEX_NAME        = "client_bench";
@@ -9,17 +11,19 @@ interface ClientInterface
     const ONE_DOC_TERM      = "dimensionnelles";
     const SUGGESTER_TEXT    = "lags"; // suggest "logs" :)
 
-    public function getDocument();
+    public function getDocument(Stopwatch &$stopwatch);
 
-    public function searchDocument();
+    public function searchDocument(Stopwatch &$stopwatch);
 
-    public function searchDocumentWithFacet();
+    public function searchDocumentWithFacet(Stopwatch &$stopwatch);
 
-    public function searchOnDisconnectNode();
+    public function searchOnDisconnectNode(Stopwatch &$stopwatch);
 
-    public function searchSuggestion();
+    public function searchSuggestion(Stopwatch &$stopwatch);
 
-    public function indexStats();
+    public function indexStats(Stopwatch &$stopwatch);
 
-    public function indexRefresh();
+    public function indexRefresh(Stopwatch &$stopwatch);
+
+    public function __construct($benchmarkType);
 }
