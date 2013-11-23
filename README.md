@@ -51,13 +51,14 @@ To run this benchmark you can use the provided Vagrantfile. It require:
 - [Ansible](http://www.ansibleworks.com/docs/intro_installation.html)
 - 15 min to boot :D
 
-
-    git clone
-    composer install
-    vagrant up
-    vagrant ssh
-    $ sudo service elasticsearch stop
-    $ cd /vagrant/
-    $ ./bin/run-all.sh "sudo /opt/elasticsearch/bin/elasticsearch"
+```sh
+git clone
+composer install
+vagrant up
+vagrant ssh
+$ sudo service elasticsearch stop
+$ cd /vagrant/
+$ ./bin/run-all.sh "sudo /opt/elasticsearch/bin/elasticsearch"
+```
 
 We use a modified version of https://github.com/davialexandre/vagrant-php for the Vagrant box (MIT License).
