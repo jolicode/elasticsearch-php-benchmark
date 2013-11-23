@@ -37,13 +37,6 @@ Runned with PHP 5.3 on Ubuntu 12.04.
  <tr><td>Memory</td><td>28311552</td><td>12320768</td><td>10747904</td><td>8388608</td></tr>
 </table>
 
-Run the bench
--------------
-
-Run:
-
-    ./bin/run-all.sh "/usr/share/elasticsearch/bin/elasticsearch -Des.path.conf=/etc/elasticsearch/"
-
 Read about the whole results
 ----------------------------
 
@@ -57,6 +50,7 @@ To run this benchmark you can use the provided Vagrantfile. It require:
 - Vagrant
 - [Ansible](http://www.ansibleworks.com/docs/intro_installation.html)
 - 15 min to boot :D
+
 
     git clone
     composer install
