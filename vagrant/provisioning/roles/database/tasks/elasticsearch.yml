@@ -1,0 +1,60 @@
+- name: Install Java, required for elasticsearch
+  apt: name=default-jre state=present update_cache=yes
+
+- name: Get the version of PHP avaiable in the server
+  command: /opt/elasticsearch/bin/elasticsearch -v
+  register: system_elasticsearch_version
+  ignore_errors: True
+
+- name: Download the elasticsearch package
+  get_url:
+    url=https://download.elasticsearch.org/elasticsearch/elasticsearch/{{ elasticsearch_tarball }}
+    dest=/tmp/{{ elasticsearch_tarball }}
+    sha256sum={{ elasticsearch_tarball_sha256sum }}
+  when: (system_elasticsearch_version | failed) or (system_elasticsearch_version.stdout.find('{{ elasticsearch_version }}') == -1)
+  register: elasticsearch_downloaded
+
+- name: Remove /opt/elasticsearch, if it exists
+  file: name=/opt/elasticsearch state=absent
+  when: not elasticsearch_downloaded|skipped
+
+- name: Extract the elasticsearch package
+  shell:
+    chdir=/tmp
+    tar -xzf {{ elasticsearch_tarball }} && mv elasticsearch-{{ elasticsearch_version }} /opt/elasticsearch
+  when: not elasticsearch_downloaded|skipped
+
+- name: Dowload the elasticsearch service wrapper
+  get_url:
+    url=https://github.com/elasticsearch/elasticsearch-servicewrapper/archive/master.tar.gz
+    dest=/tmp/elasticsearch_service_wrapper.tar.gz
+  when: not elasticsearch_downloaded|skipped
+
+- name: Extract the elasticsearch service wrapper
+  shell:
+    chdir=/tmp
+    tar -xzf elasticsearch_service_wrapper.tar.gz && mv elasticsearch-servicewrapper-master/service /opt/elasticsearch/bin
+    creates=/opt/elasticsearch/bin/service/elasticsearch
+
+- name: Update the elasticsearch service wrapper configuration file
+  template:
+    src=elasticsearch.conf.j2
+    dest=/opt/elasticsearch/bin/service/elasticsearch.conf
+
+- name: Install the elasticsearch service wrapper
+  command:
+    /opt/elasticsearch/bin/service/elasticsearch install
+    creates=/etc/init.d/elasticsearch
+
+- name: Configure elasticsearch to start on boot and start it
+  service: name=elasticsearch enabled=yes state=started
+
+#- name: Install elasticsearch plugins
+#  command:
+#    /opt/elasticsearch/bin/plugin -install {{ item.name }}
+#    creates=/opt/elasticsearch/plugins/{{ item.dir }}
+#  with_items:
+#  - { name: mobz/elasticsearch-head, dir: head }
+#  - { name: lukas-vlcek/bigdesk, dir: bigdesk }
+#  - { name: royrusso/elasticsearch-HQ, dir: HQ }
+#  - { name: karmi/elasticsearch-paramedic, dir: paramedic }

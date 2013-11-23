@@ -1,0 +1,10 @@
+- name: Add the MongoDB public GPG Key to apt
+  apt_key: url=http://docs.mongodb.org/10gen-gpg-key.asc state=present
+
+- name: Add the MongoDB repository
+  shell:
+      echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | sudo tee /etc/apt/sources.list.d/10gen.list
+      creates=/etc/apt/sources.list.d/10gen.list
+
+- name: Install mongodb using mongodb-10gen
+  apt: name=mongodb-10gen state=present update_cache=yes

@@ -1,0 +1,16 @@
+server {
+    root /vagrant;
+    index index.html index.htm index.php;
+
+    location / {
+        try_files $uri $uri/ /index.php;
+    }
+
+    location ~ \.php$ {
+        fastcgi_split_path_info ^(.+\.php)(.*)$;
+        fastcgi_param SCRIPT_NAME $fastcgi_script_name;
+        fastcgi_param PATH_INFO $fastcgi_path_info;
+        fastcgi_pass   127.0.0.1:9000;
+        include        fastcgi_params;
+    }
+}

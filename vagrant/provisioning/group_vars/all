@@ -1,0 +1,9 @@
+php_version: 5.5.5
+php_tarball: php-{{ php_version }}.tar.gz
+php_tarball_sha256sum: 483ff2370fa3a8863e6b023383c4bcfcc3ba462137c30c5fc75043e1755b7d17
+
+elasticsearch_version: 0.90.6
+elasticsearch_tarball: elasticsearch-{{ elasticsearch_version }}.tar.gz
+elasticsearch_tarball_sha256sum: 2ff87847e993d52723b4e789db3cbba887f414b85bf04fd897032bc52fe0ad3a
+elasticsearch_home: /opt/elasticsearch
+elasticsearch_heap_size: 124

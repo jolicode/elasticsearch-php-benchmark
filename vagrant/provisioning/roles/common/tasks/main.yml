@@ -1,0 +1,16 @@
+- name: Install some basic packages
+  apt: name={{ item }} state=present update_cache=yes
+  with_items:
+  - vim
+  - curl
+  - git
+#  - subversion
+  - telnet
+
+- name: Copy the timezone file
+  copy: src=timezone dest=/etc/timezone mode=0644 owner=root group=root
+  register: timezone_file
+
+- name: Run dpkg-reconfigure to update the timezone
+  command: dpkg-reconfigure -f noninteractive tzdata
+  when: timezone_file.changed

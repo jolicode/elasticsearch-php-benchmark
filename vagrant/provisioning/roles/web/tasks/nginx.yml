@@ -1,0 +1,10 @@
+- name: Install Nginx from APT repository
+  apt: name=nginx state=present
+
+- name: Copy the nginx.conf file
+  copy: src=nginx.conf dest=/etc/nginx/nginx.conf mode=0644 owner=root group=root
+
+- name: Update the nginx default host file
+  copy: src=default_nginx_host dest=/etc/nginx/sites-available/default
+  notify:
+  - restart nginx

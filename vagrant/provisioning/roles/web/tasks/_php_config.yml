@@ -1,0 +1,55 @@
+#- name: Install PECL packages
+#  php_package: mode=pecl name={{ item }} state=present
+#  with_items:
+#  - mongo
+#  - xdebug
+#
+#- name: Create the xdebug remote log dir
+#  file:
+#    path=/var/log/xdebug
+#    state=directory
+#    mode=0755
+#    owner=vagrant
+#    group=vagrant
+#
+#- name: Install version 2.0.1 of memcached PECL package
+#  php_package:
+#    mode=pecl
+#    name=memcached
+#    version='2.0.1'
+#    state=present
+#
+#- name: Copy the php-fpm init script
+#  copy:
+#    src=php-fpm
+#    dest=/etc/init.d/php-fpm
+#    mode=0755
+#
+#- name: Configure php-fpm to start on boot
+#  service: name=php-fpm enabled=yes
+#
+#- name: Create PHP configuration directories
+#  file:
+#    path=/etc/php/fpm/conf.d
+#    state=directory
+#    mode=0755
+#
+#- name: Copy PHP configuration files
+#  copy: src={{ item.src }} dest={{ item.dest }}
+#  with_items:
+#  - { src: 'php-fpm.conf', dest: '/etc/php/fpm/' }
+#  - { src: 'php.ini', dest: '/etc/php/fpm/' }
+#  - { src: 'xdebug.ini', dest: '/etc/php/fpm/conf.d/' }
+#  - { src: 'memcached.ini', dest: '/etc/php/fpm/conf.d/' }
+#  - { src: 'mongo.ini', dest: '/etc/php/fpm/conf.d/' }
+#  - { src: 'opcache.ini', dest: '/etc/php/fpm/conf.d/' }
+#  notify:
+#    - restart php-fpm
+#
+#- name: Remove the php-fpm.conf example file, installed with php
+#  file: path=/etc/php-fpm.conf.default state=absent
+
+- name: Install composer
+  shell:
+    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin && mv /usr/bin/composer.phar /usr/bin/composer
+    creates=/usr/bin/composer

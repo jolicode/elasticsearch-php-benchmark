@@ -1,0 +1,45 @@
+- name: Install required packages to compile php
+  apt: name={{ item }} state=present update_cache=yes
+  with_items:
+  - autoconf 
+  - automake
+  - libtool
+  - re2c
+  - bison
+  - libjpeg-dev
+  - libmemcached-dev
+  - zlib1g-dev
+  - texlive-latex-base
+  - libt1-dev
+  - libfreetype6-dev
+  - libpq-dev
+#  - libmysqlclient-dev
+  - libxslt1-dev
+  - libxml2
+  - libxml2-dev
+  - libcurl3
+  - libcurl4-gnutls-dev
+  - libmagic-dev
+  - libgd2-xpm-dev
+#  - mysql-client
+
+- name: Download the PHP source code
+  get_url:
+    url=http://br1.php.net/distributions/{{ php_tarball }}
+    dest=/tmp/{{ php_tarball }}
+    sha256sum={{ php_tarball_sha256sum }}
+
+- name: Extract the PHP source code
+  command:
+    chdir=/tmp tar -xzf {{ php_tarball }}
+    removes=/tmp/{{ php_tarball }}
+
+- name: Run ./configure
+  command:
+    chdir=/tmp/php-{{ php_version }}
+    ./configure --with-gd --prefix=/usr --sysconfdir=/etc --with-config-file-path=/etc/php/fpm/ --enable-fpm --with-fpm-user=vagrant --with-fpm-group=vagrant --enable-opcache --enable-mbstring --enable-mbregex --with-mysqli --with-openssl --with-curl --with-zlib --with-config-file-scan-dir=/etc/php/fpm/conf.d --with-xsl --with-pdo-mysql --with-pdo-pgsql --with-jpeg-dir=/usr --with-freetype-dir=/usr --with-t1lib  --enable-zip --with-pcre-regex --enable-calendar --enable-ftp
+
+- name: Run make && make install
+  shell:
+    chdir=/tmp/php-{{ php_version }}
+    make && make install

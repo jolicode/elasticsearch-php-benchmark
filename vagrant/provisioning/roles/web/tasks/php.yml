@@ -1,0 +1,10 @@
+- name: get the version of PHP avaiable in the server
+  command: php -v
+  register: system_php_version
+  ignore_errors: True
+
+# compile PHP only when it is not installed
+- include: _php_compile.yml
+  when: system_php_version|failed
+
+- include: _php_config.yml

@@ -1,0 +1,7 @@
+- hosts: all
+  remote_user: vagrant
+  sudo: yes
+  roles:
+    - role: common
+    - role: web
+    - role: database
