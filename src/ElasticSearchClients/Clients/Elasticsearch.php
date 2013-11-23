@@ -3,7 +3,6 @@
 namespace ElasticSearchClients\Clients;
 
 use \Elasticsearch\Client;
-use \Elasticsearch\Endpoints\Indices\Refresh;
 use Symfony\Component\Stopwatch\Stopwatch;
 
 /**
@@ -66,6 +65,7 @@ class Elasticsearch implements ClientInterface
                 'type'  => self::TYPE_NAME,
                 'id'    => self::EXISTING_ID
             ));
+
         return $stopwatch->stop('getDocument');
 
     }
@@ -109,6 +109,7 @@ class Elasticsearch implements ClientInterface
                     ),
                 )
             ));
+
         return $stopwatch->stop('searchDocumentWithFacet');
     }
 
@@ -168,6 +169,7 @@ class Elasticsearch implements ClientInterface
     {
         $stopwatch->start('indexRefresh');
         $this->client->indices()->refresh(array('index' => self::INDEX_NAME));
+
         return $stopwatch->stop('indexRefresh');
     }
 
@@ -175,6 +177,7 @@ class Elasticsearch implements ClientInterface
     {
         $stopwatch->start('indexStats');
         $this->client->indices()->stats(array('index' => self::INDEX_NAME));
+
         return $stopwatch->stop('indexStats');
     }
 }

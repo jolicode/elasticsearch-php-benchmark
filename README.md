@@ -40,7 +40,9 @@ Runned with PHP 5.3 on Ubuntu 12.04.
 Run the bench
 -------------
 
-Boot Elasticsearch on the default port and run `./bin/run-all.sh`.
+Run:
+
+    ./bin/run-all.sh "/usr/share/elasticsearch/bin/elasticsearch -Des.path.conf=/etc/elasticsearch/"
 
 Read about the whole results
 ----------------------------

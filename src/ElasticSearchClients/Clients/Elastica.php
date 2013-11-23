@@ -54,6 +54,7 @@ class Elastica implements ClientInterface
     {
         $stopwatch->start('getDocument');
         $this->client->getIndex(self::INDEX_NAME)->getType(self::TYPE_NAME)->getDocument(self::EXISTING_ID);
+
         return $stopwatch->stop('getDocument');
 
     }
@@ -128,6 +129,7 @@ class Elastica implements ClientInterface
         $stopwatch->start('indexRefresh');
         $index = $this->client->getIndex(self::INDEX_NAME);
         $index->refresh();
+
         return $stopwatch->stop('indexRefresh');
     }
 
@@ -136,6 +138,7 @@ class Elastica implements ClientInterface
         $stopwatch->start('indexStats');
         $index = $this->client->getIndex(self::INDEX_NAME);
         $index->getStats()->getData();
+
         return $stopwatch->stop('indexStats');
     }
 }

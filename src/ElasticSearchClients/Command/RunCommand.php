@@ -58,6 +58,7 @@ class RunCommand extends Command
 
         if (!isset($this->clients[$client_name])) {
             $output->writeln("Unknown client name.");
+
             return;
         }
 
@@ -74,35 +75,27 @@ class RunCommand extends Command
             $client = new $this->clients[$client_name]('transient');
         }
 
-        for ($i = 0; $i < 500; $i++)
-        {
+        for ($i = 0; $i < 500; $i++) {
             if ($type === 'transient') {
                 /** @var $client ClientInterface */
                 $client = new $this->clients[$client_name]('transient');
             }
 
-            foreach ($this->methods as $method)
-            {
-                try
-                {
+            foreach ($this->methods as $method) {
+                try {
                     /** @var StopwatchEvent $event */
                     $event = $client->{$method}($stopwatch);
 
-                    if ($i === 499)
-                    {
+                    if ($i === 499) {
                         $total += $event->getDuration();
                         $this->writeEvent($event, $method, $output);
                     }
-                }
-                catch (\Exception $e)
-                {
-                    if (!$hide_errors)
-                    {
+                } catch (\Exception $e) {
+                    if (!$hide_errors) {
                         $output->writeln('Error: '.$e->getMessage());
                     }
 
-                    if ($i === 499)
-                    {
+                    if ($i === 499) {
                         $output->writeln($method."\t0\tFAIL");
                     }
                 }
@@ -111,7 +104,6 @@ class RunCommand extends Command
 
         $this->writeTotal($total, $client_name, $output);
     }
-
 
     protected function writeEvent(StopwatchEvent $event, $name, $output)
     {

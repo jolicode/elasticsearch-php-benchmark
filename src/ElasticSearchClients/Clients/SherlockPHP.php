@@ -3,7 +3,6 @@
 namespace ElasticSearchClients\Clients;
 
 use Sherlock\components\facets\Terms;
-use Sherlock\requests\BatchCommand;
 use Sherlock\requests\Command;
 use Sherlock\Sherlock as Sherlock;
 use Symfony\Component\Stopwatch\Stopwatch;
@@ -37,6 +36,7 @@ class SherlockPHP implements ClientInterface
         $q->index(self::INDEX_NAME);
 
         $q->execute();
+
         return $stopwatch->stop('getDocument');
     }
 
@@ -72,6 +72,7 @@ class SherlockPHP implements ClientInterface
         $facet->fields(array('author.name'));
 
         $s->query($ma)->facets($facet)->execute();
+
         return $stopwatch->stop('searchDocumentWithFacet');
 
     }

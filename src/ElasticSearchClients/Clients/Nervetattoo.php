@@ -34,6 +34,7 @@ class Nervetattoo implements ClientInterface
     {
         $stopwatch->start('getDocument');
         $this->client->get(self::EXISTING_ID);
+
         return $stopwatch->stop('getDocument');
     }
 
@@ -63,6 +64,7 @@ class Nervetattoo implements ClientInterface
                   )
             ),
         ));
+
         return $stopwatch->stop('searchDocumentWithFacet');
     }
 
@@ -101,6 +103,7 @@ class Nervetattoo implements ClientInterface
         if (!isset($suggests['suggest1'])) {
             throw new \Exception("Suggestion is broken, no suggestion received");
         }
+
         return $event;
 
     }
@@ -109,6 +112,7 @@ class Nervetattoo implements ClientInterface
     {
         $stopwatch->start('indexRefresh');
         $this->client->refresh();
+
         return $stopwatch->stop('indexRefresh');
     }
 
@@ -116,6 +120,7 @@ class Nervetattoo implements ClientInterface
     {
         $stopwatch->start('indexStats');
         $this->client->request('/'.self::INDEX_NAME.'/_stats', "GET", false, true);
+
         return $stopwatch->stop('indexStats');
     }
 }
