@@ -19,22 +19,23 @@ About versions
 - **elasticsearch/elasticsearch**: v0.4.2
 - **nervetattoo/elasticsearch**: v2.3.0
 
-Data extracted 2013/11/15
+
+Data extracted 2013/11/25
 -------------------------
 
-Runned with PHP 5.3 on Ubuntu 12.04.
+Runned on the VM (PHP 5.5.5, ES 0.90.6, Ubuntu precise64).
 
 <table>
-<tr><th> </th><th>elasticsearch</th><th>sherlock</th><th>elastica</th><th>nervetattoo</th></tr>
- <tr><td>getDocument</td><td>9772</td><td>2235</td><td>1549</td><td>1109</td></tr>
- <tr><td>searchDocument</td><td>5753</td><td>2518</td><td>1859</td><td>1118</td></tr>
- <tr><td>searchDocumentWithFacet</td><td>5803</td><td>3109</td><td>2047</td><td>1057</td></tr>
- <tr><td>searchOnDisconnectNode</td><td>12419</td><td>0</td><td>2859</td><td>0</td></tr>
- <tr><td>searchSuggestion</td><td>7015</td><td>0</td><td>24582</td><td>2203</td></tr>
- <tr><td>indexRefresh</td><td>4916</td><td>0</td><td>1489</td><td>1502</td></tr>
- <tr><td>indexStats</td><td>5107</td><td>0</td><td>1674</td><td>1402</td></tr>
- <tr><td>Total time</td><td>55564</td><td>11004</td><td>37088</td><td>9844</td></tr>
- <tr><td>Memory</td><td>28311552</td><td>12320768</td><td>10747904</td><td>8388608</td></tr>
+<tr><th></th><th>elasticsearch       </th><th>sherlock            </th><th>elastica            </th><th>nervetattoo         </th></tr>
+ <tr><td>getDocument         </td><td>1055</td><td>1123</td><td>694</td><td>785</td></tr>
+ <tr><td>searchDocument      </td><td>873</td><td>1206</td><td>724</td><td>724</td></tr>
+ <tr><td>searchDocumentWithFacet</td><td>918</td><td>1409</td><td>786</td><td>691</td></tr>
+ <tr><td>searchOnDisconnectNode</td><td>1169</td><td>818</td><td>924</td><td>0</td></tr>
+ <tr><td>searchSuggestion    </td><td>1532</td><td>0</td><td>1237</td><td>1292</td></tr>
+ <tr><td>indexRefresh        </td><td>684</td><td>0</td><td>604</td><td>843</td></tr>
+ <tr><td>indexStats          </td><td>831</td><td>0</td><td>719</td><td>904</td></tr>
+ <tr><td>Total time</td><td>7062</td><td>4556</td><td>5688</td><td>5239</td></tr>
+ <tr><td>Memory</td><td>9437184</td><td>6029312</td><td>4194304</td><td>3670016</td></tr>
 </table>
 
 Read about the whole results
@@ -58,7 +59,7 @@ vagrant up
 vagrant ssh
 $ sudo service elasticsearch stop
 $ cd /vagrant/
-$ ./bin/run-all.sh "sudo /opt/elasticsearch/bin/elasticsearch"
+$ ./bin/run-all.sh "sudo /opt/elasticsearch/bin/elasticsearch" && sudo killall /usr/bin/java
 ```
 
 We use a modified version of https://github.com/davialexandre/vagrant-php for the Vagrant box (MIT License).
